@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="question">HELLOOOOOOOO</string>
+    <string name="question_0">What are the 0 hexagons on the road for?</string>
+    <string name="question_1">What are the 1 hexagons on the road for?</string>
+    <string name="question_2">What are the 2 hexagons on the road for?</string>
+    <string name="question_3">What are the 3 hexagons on the road for?</string>
+    <string name="aboutBt">About</string>
+    <string name="hintBt">Hint</string>
+    <string name="nextBt">Next</string>
+    <string name="scorePercentage">Your score is 0%</string>
+    <string name="questionOutOf">Question 0 out of 0</string>
+    <string name="correctWrong">0/0 correct</string>
 </resources>
