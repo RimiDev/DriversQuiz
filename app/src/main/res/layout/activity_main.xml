@@ -19,11 +19,12 @@
         android:layout_marginBottom="30dp">
 
         <TextView
+            android:id="@+id/question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="20dp"
-            android:text="@string/question"/>
+            android:text="@string/question"
+            android:textSize="20dp" />
 
     </LinearLayout>
 
@@ -36,16 +37,18 @@
         android:layout_weight="1">
 
         <ImageButton
+            android:id="@+id/img_1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/dq_icon"/>
+            android:background="@drawable/dq_icon" />
 
         <ImageButton
+            android:id="@+id/img_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/dq_icon"/>
+            android:background="@drawable/dq_icon" />
 
 
     </LinearLayout>
@@ -56,16 +59,18 @@
         android:layout_weight="1">
 
         <ImageButton
+            android:id="@+id/img_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/dq_icon"/>
+            android:background="@drawable/dq_icon" />
 
         <ImageButton
+            android:id="@+id/img_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/dq_icon"/>
+            android:background="@drawable/dq_icon" />
 
 
     </LinearLayout>
