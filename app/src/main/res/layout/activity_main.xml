@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="30dp"
+            android:textSize="20dp"
             android:text="@string/question"/>
 
     </LinearLayout>
@@ -33,17 +33,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.2">
+        android:layout_weight="1">
 
         <ImageButton
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/dq_icon"/>
 
         <ImageButton
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/dq_icon"/>
 
@@ -53,7 +53,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.2">
+        android:layout_weight="1">
 
         <ImageButton
             android:layout_width="match_parent"
@@ -140,11 +140,11 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/nextBt"/>
-            <!--android:visibility="invisible"/>-->
+            android:text="@string/nextBt" />
+        <!--android:visibility="invisible"/>-->
 
     </LinearLayout>
 
-   </LinearLayout>
+</LinearLayout>
 
 
