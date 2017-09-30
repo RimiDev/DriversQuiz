@@ -23,7 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/question"
             android:textSize="20dp" />
 
     </LinearLayout>
@@ -82,23 +81,25 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/questionOutOf"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom">
-
         <TextView
+            android:id="@+id/qOutOf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/correctWrong"/>
+            android:layout_weight="1"
+            android:text="@string/questionOutOf" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom">
+
+        <TextView
+            android:id="@+id/qCorrect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/correctWrong" />
 
     </LinearLayout>
 
@@ -110,6 +111,7 @@
         android:layout_gravity="center|bottom">
 
         <TextView
+            android:id="@+id/qPercentage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/scorePercentage"/>
@@ -143,10 +145,11 @@
         android:layout_gravity="bottom">
 
         <Button
+            android:id="@+id/nextBut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/nextBt" />
-        <!--android:visibility="invisible"/>-->
+            android:text="@string/nextBt"
+            android:visibility="invisible"/>
 
     </LinearLayout>
 
