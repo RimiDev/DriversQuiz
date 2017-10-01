@@ -1,10 +1,14 @@
 package cs.dawson.myapplication;
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -13,7 +17,6 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     int quizAttempts, tries, correct, incorrect, currQuestion;
-
 
 
     ImageButton[] buttons;
@@ -26,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     int[] invalidIMG;
 
 
-    private void loadArrays(){
+    private void loadArrays() {
         questionIMG = new int[4];
         questionIMG[0] = R.drawable.stop_1;
         questionIMG[1] = R.drawable.maxspeed;
@@ -50,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         buttons[3] = (ImageButton) findViewById(R.id.img_4);
 
 
-
-
     }
 
     @Override
@@ -64,11 +65,20 @@ public class MainActivity extends AppCompatActivity {
 
         question = (TextView) findViewById(R.id.question);
 
+        Button hintButton = (Button) findViewById(R.id.hint_button);
+        hintButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+
+                Resources res = getResources();
+                String searchPhrase = res.getString(R.string.question_0); // hard coded question for test
+                searchWeb(searchPhrase);
+            }
+        });
+
         //img_1.setVisibility(View.INVISIBLE);
 
 
-       // img_2.setBackgroundResource(R.drawable.noparking); // sets image for imagebutton
-
+        // img_2.setBackgroundResource(R.drawable.noparking); // sets image for imagebutton
 
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         quizAttempts = prefs.getInt("QuizAttempts", 0);
@@ -78,24 +88,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private int setGrid(){
+    public void onAboutClick(View v){
+        Intent clickedAbout = new Intent(this, AboutActivity.class);
+        startActivity(clickedAbout);
+    }
+
+    private int setGrid() {
 
 
         grid = new int[4];
 
         Random rand = new Random();
 
-        int  q = rand.nextInt(3);
+        int q = rand.nextInt(3);
 
 
-        for(int i = 0; i<grid.length-1; i++){
-            if(i == q){
+        for (int i = 0; i < grid.length - 1; i++) {
+            if (i == q) {
                 grid[i] = questionIMG[currQuestion];
                 //set right action for click
 
                 continue;
-            }
-            else{
+            } else {
                 //genereate another random
                 //verify random hasnt been used
                 //add that random to a list so we dont duplicate it
@@ -111,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void drawGrid(final int correct){
+    private void drawGrid(final int correct) {
 
         buttons[correct].setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,12 +136,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         buttons[0].setBackgroundResource(grid[0]);
         buttons[1].setBackgroundResource(grid[1]);
         buttons[2].setBackgroundResource(grid[2]);
         buttons[3].setBackgroundResource(grid[3]);
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -157,4 +171,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
     }
+
+    public void searchWeb(String query) {
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, query);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+
+
+
 }
