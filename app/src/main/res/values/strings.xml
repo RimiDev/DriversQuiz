@@ -10,4 +10,14 @@
     <string name="scorePercentage">Your score is 0%</string>
     <string name="questionOutOf">Question 0 out of 0</string>
     <string name="correctWrong">0/0 correct</string>
+    <string name="aboutTitle">About</string>
+    <string name="instructionTitle">Instructions</string>
+    <string name="instructions">Welcome to Nick and Max\'s driver quiz! The object of the quiz is
+        simple, get the highest score possible. Read the question, then select the corresponding
+        image. If the answer is correct, you will be able to move to the next question. If the
+        answer is wrong, you will get one last try to select your answer. All along the quiz and at
+        the end you will be presented with your score.</string>
+    <string name="developers">Developped by Maxime Lacasse and Nicolas Mazzone. Third year computer
+        science students at Dawson College</string>
+    <string name="lastScores">Last quiz scores: 100%, 100%</string>
 </resources>
