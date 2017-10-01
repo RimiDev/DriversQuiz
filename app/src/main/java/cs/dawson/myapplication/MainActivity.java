@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         question = (TextView) findViewById(R.id.question);
 
-        Button aboutButton = (Button) findViewById(R.id.hint_button);
-        aboutButton.setOnClickListener(new View.OnClickListener(){
+        Button hintButton = (Button) findViewById(R.id.hint_button);
+        hintButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
                 Resources res = getResources();
@@ -80,13 +80,17 @@ public class MainActivity extends AppCompatActivity {
 
         // img_2.setBackgroundResource(R.drawable.noparking); // sets image for imagebutton
 
-
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         quizAttempts = prefs.getInt("QuizAttempts", 0);
         tries = prefs.getInt("tries", 0);
         correct = prefs.getInt("QuizAttempts", 0);
         incorrect = prefs.getInt("incorrect", 0);
 
+    }
+
+    public void onAboutClick(View v){
+        Intent clickedAbout = new Intent(this, AboutActivity.class);
+        startActivity(clickedAbout);
     }
 
     private int setGrid() {

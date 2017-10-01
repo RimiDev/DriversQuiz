@@ -126,7 +126,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/aboutBt" />
+                android:text="@string/aboutBt"
+                android:onClick="onAboutClick"/>
 
             <Button
                 android:id="@+id/hint_button"
