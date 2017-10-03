@@ -98,11 +98,15 @@ public class MainActivity extends AppCompatActivity {
         int correct = setGrid();
         drawGrid(correct);
 
+        restoreSharedPreferences();
+
         question = (TextView) findViewById(R.id.question);
         qOutOf = (TextView) findViewById(R.id.qOutOf);
         qPercentage = (TextView) findViewById(R.id.qPercentage);
         qCorrect = (TextView) findViewById(R.id.qCorrect);
         nextBut = (Button) findViewById(R.id.nextBut);
+
+
 
 //        Animation mAnimation = new AlphaAnimation(1, 0);
 //        mAnimation.setDuration(200);
@@ -334,6 +338,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        getSharedPreferences();
+
+
     }
 
     @Override
@@ -355,6 +362,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void getSharedPreferences(){
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("quizAttempts",quizAttempts);
+        editor.putInt("tries",tries);
+        editor.putInt("correctAns",correctAns);
+        editor.putInt("incorrectAns",incorrectAns);
+        editor.putInt("currQuestion", currQuestion);
+        editor.putInt("percentage", percentage);
+        editor.putInt("randCorrect", randCorrect);
+        editor.apply(); // Android suggests to use apply, writes data faster
+    }
+    private void restoreSharedPreferences(){
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        quizAttempts = preferences.getInt("quizAttempts",quizAttempts);
+        tries = preferences.getInt("tries", tries);
+        correctAns = preferences.getInt("correctAns",correctAns);
+        incorrectAns = preferences.getInt("incorrectAns", incorrectAns);
+        currQuestion = preferences.getInt("currQuestion", currQuestion);
+        percentage = preferences.getInt("percentage", percentage);
+        randCorrect = preferences.getInt("randCorrect", randCorrect);
 
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }
