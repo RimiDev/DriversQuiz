@@ -8,8 +8,8 @@
     <string name="hintBt">Hint</string>
     <string name="nextBt">Next</string>
     <string name="scorePercentage">Your score is 0%</string>
-    <string name="questionOutOf">Question 0 out of 0</string>
-    <string name="correctWrong">0/0 correct</string>
+    <string name="questionOutOf">Question 1 out of 4</string>
+    <string name="correctWrong">0/4 correct</string>
     <string name="aboutTitle">About</string>
     <string name="instructionTitle">Instructions</string>
     <string name="instructions">Welcome to Nick and Max\'s driver quiz! The object of the quiz is
@@ -20,4 +20,8 @@
     <string name="developers">Developped by Maxime Lacasse and Nicolas Mazzone. Third year computer
         science students at Dawson College</string>
     <string name="lastScores">Last quiz scores: 100%, 100%</string>
+    <string name="finishedMessage">Congratulations! You\'ve finished the quiz.</string>
+    <string name="finalScore">You\'re final score is 0%</string>
+    <string name="playAgain">Play Again</string>
+    <string name="quit">Quit</string>
 </resources>

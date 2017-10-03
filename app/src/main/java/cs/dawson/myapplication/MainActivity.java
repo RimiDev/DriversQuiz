@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     int[] rightWrong;
     int randCorrect;
 
+    boolean quizFinished;
+
     TextView question;
     TextView qOutOf;
     TextView qPercentage;
@@ -94,26 +96,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //restoreSharedPreferences();
+        currQuestion = 1;
         loadArrays();
         int correct = setGrid();
         drawGrid(correct);
-
-        restoreSharedPreferences();
 
         question = (TextView) findViewById(R.id.question);
         qOutOf = (TextView) findViewById(R.id.qOutOf);
         qPercentage = (TextView) findViewById(R.id.qPercentage);
         qCorrect = (TextView) findViewById(R.id.qCorrect);
         nextBut = (Button) findViewById(R.id.nextBut);
-
-
-
-//        Animation mAnimation = new AlphaAnimation(1, 0);
-//        mAnimation.setDuration(200);
-//        mAnimation.setInterpolator(new LinearInterpolator());
-//        mAnimation.setRepeatCount(Animation.INFINITE);
-//        mAnimation.setRepeatMode(Animation.REVERSE);
-
 
         Button hintButton = (Button) findViewById(R.id.hint_button);
         hintButton.setOnClickListener(new View.OnClickListener(){
@@ -124,18 +117,6 @@ public class MainActivity extends AppCompatActivity {
                 searchWeb(searchPhrase);
             }
         });
-
-        //img_1.setVisibility(View.INVISIBLE);
-
-
-        // img_2.setBackgroundResource(R.drawable.noparking); // sets image for imagebutton
-
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        quizAttempts = prefs.getInt("QuizAttempts", 0);
-        tries = prefs.getInt("tries", 0);
-        correctAns = prefs.getInt("QuizAttempts", 0);
-        incorrectAns = prefs.getInt("incorrect", 0);
-
     }
 
     public void onAboutClick(View v){
@@ -144,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int setGrid() {
-
 
         grid = new int[4];
         usedImgs = new int[4];
@@ -158,10 +138,8 @@ public class MainActivity extends AppCompatActivity {
 
         logIt("q:"+ randCorrect );
 
-
         for(int i = 0; i<grid.length; i++){
             if(i == randCorrect){
-
                 grid[i] = questionIMG[currQuestion];
             } else {
                     for (int j=0; j<usedImgs.length;j++){
@@ -174,13 +152,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
             }
-
-
         }
-
         return randCorrect;
-
-
     }
 
 
@@ -191,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
      */
 
     private void drawGrid(int correct){
-
 
         for (int i=0; i<buttons.length;i++){
             if (i == correct){
@@ -227,10 +199,13 @@ public class MainActivity extends AppCompatActivity {
     public void correctImage() {
         nextBut.setVisibility(View.VISIBLE);
         if (currQuestion < 4) { // end quiz if more.
+
+            quizFinished = false;
             tries = 0;
             currQuestion++;
             correctAns++;
             updateUI(tries,incorrectAns,correctAns,currQuestion);
+
             for (int i=0;i<buttons.length;i++){
                 buttons[i].setClickable(false);
             }
@@ -245,6 +220,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
+
+            quizFinished = true;
+            Intent quizEnd = new Intent(this, QuizFinished.class);
+            startActivity(quizEnd);
+
             //window pop up CONGRATZ U WIN, winner winner chicken dinner.
         }
 
@@ -297,14 +277,14 @@ public class MainActivity extends AppCompatActivity {
         String outOf = "Question " + currQuestion + " out of 4";
         qOutOf.setText(outOf);
         //correct/tries correct
-        String corTries = correctAns + "/" + incorrectAns + " correct";
+        String corTries = correctAns + "/4 correct";
         qCorrect.setText(corTries);
         //Score percentage
         if (incorrectAns == 0) {
             logIt("Can't divide by 0, fatal exception");
             qPercentage.setText("Your score is 100%");
         } else {
-            double percentageScore =  ((double) correctAns / incorrectAns) * 100;
+            double percentageScore =  ((double) correctAns / 4) * 100;
             int intpScore = (int) percentageScore;
             if (intpScore > 100){
                 String pScore100 = "Your score is 100%";
@@ -321,36 +301,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         getSharedPreferences();
-
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
     }
 
     public void searchWeb(String query) {
@@ -372,18 +325,36 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt("currQuestion", currQuestion);
         editor.putInt("percentage", percentage);
         editor.putInt("randCorrect", randCorrect);
-        editor.apply(); // Android suggests to use apply, writes data faster
+        editor.putBoolean("quizFinished", quizFinished);
+        editor.commit();
     }
     private void restoreSharedPreferences(){
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        quizAttempts = preferences.getInt("quizAttempts",quizAttempts);
-        tries = preferences.getInt("tries", tries);
-        correctAns = preferences.getInt("correctAns",correctAns);
-        incorrectAns = preferences.getInt("incorrectAns", incorrectAns);
-        currQuestion = preferences.getInt("currQuestion", currQuestion);
-        percentage = preferences.getInt("percentage", percentage);
-        randCorrect = preferences.getInt("randCorrect", randCorrect);
 
+        boolean finished = preferences.getBoolean("quizFinished", quizFinished);
+
+        if(finished){
+            resetAllCounters();
+        }
+        else {
+
+            quizAttempts = preferences.getInt("quizAttempts", quizAttempts);
+            tries = preferences.getInt("tries", tries);
+            correctAns = preferences.getInt("correctAns", correctAns);
+            incorrectAns = preferences.getInt("incorrectAns", incorrectAns);
+            currQuestion = preferences.getInt("currQuestion", currQuestion);
+            percentage = preferences.getInt("percentage", percentage);
+            randCorrect = preferences.getInt("randCorrect", randCorrect);
+        }
+
+    }
+
+    private void resetAllCounters(){
+        tries = 0;
+        incorrectAns = 0;
+        correctAns = 0;
+        currQuestion = 0;
+        percentage = 0;
     }
 
     @Override
