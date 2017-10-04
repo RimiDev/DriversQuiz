@@ -6,28 +6,25 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
 
-
     int quizAttempts, tries, correctAns, incorrectAns, currQuestion, percentage;
     ImageButton[] buttons;
     int[] rightWrong;
     int randCorrect;
+    int intpScore;
 
-    boolean quizFinished;
+    boolean quizFinished = false;
 
     TextView question;
     TextView qOutOf;
@@ -40,17 +37,12 @@ public class MainActivity extends AppCompatActivity {
     ImageButton button3;
     ImageButton button4;
 
-
     int[] questionIMG;
     int[] questionString;
     int[] grid;
     int[] invalidIMG;
     int[] usedImgs;
-
-    Animation mAnimation;
-
-
-
+    int[] lastScores;
 
     private void loadArrays() {
         questionIMG = new int[4];
@@ -61,17 +53,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         questionString = new int[4];
-        questionString[0] = R.string.question_0;
-        questionString[1] = R.string.question_1;
-        questionString[2] = R.string.question_2;
-        questionString[3] = R.string.question_3;
+        questionString[0] = R.string.stop;
+        questionString[1] = R.string.maximum;
+        questionString[2] = R.string.parking;
+        questionString[3] = R.string.uturn;
 
         invalidIMG = new int[11];
-        invalidIMG[0] = R.drawable.stop;
-        invalidIMG[1] = R.drawable.maxspeed;
-        invalidIMG[2] = R.drawable.noparking;
-        invalidIMG[3] = R.drawable.uturn;
-        //do rest
+        invalidIMG[0] = R.drawable.construction;
+        invalidIMG[1] = R.drawable.dirtahead;
+        invalidIMG[2] = R.drawable.lightahead;
+        invalidIMG[3] = R.drawable.mutlipleroads;
+        invalidIMG[4] = R.drawable.noentry;
+        invalidIMG[5] = R.drawable.norightturns;
+        invalidIMG[6] = R.drawable.quayend;
+        invalidIMG[7] = R.drawable.yiels;
+        invalidIMG[8] = R.drawable.nopassing;
+        invalidIMG[9] = R.drawable.nowalking;
+        invalidIMG[10] = R.drawable.sharedroad;
 
         buttons = new ImageButton[4];
         buttons[0] = (ImageButton) findViewById(R.id.img_1);
@@ -88,39 +86,43 @@ public class MainActivity extends AppCompatActivity {
         rightWrong[0] = R.drawable.incorrect;
         rightWrong[1] = R.drawable.correct;
 
-        nextBut = (Button) findViewById(R.id.nextBut);
-
+        lastScores = new int[2];
+        lastScores[0] = 0;
+        lastScores[1] = 0;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //restoreSharedPreferences();
+
         currQuestion = 1;
         loadArrays();
-        int correct = setGrid();
-        drawGrid(correct);
+        restoreSharedPreferences();
 
+        nextBut = (Button) findViewById(R.id.nextBut);
         question = (TextView) findViewById(R.id.question);
         qOutOf = (TextView) findViewById(R.id.qOutOf);
         qPercentage = (TextView) findViewById(R.id.qPercentage);
         qCorrect = (TextView) findViewById(R.id.qCorrect);
         nextBut = (Button) findViewById(R.id.nextBut);
 
-        Button hintButton = (Button) findViewById(R.id.hint_button);
-        hintButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        int correct = setGrid();// position of correct answer
+        insertQuestion(correct);
+        drawGrid(correct);
+    }
 
-                Resources res = getResources();
-                String searchPhrase = res.getString(R.string.question_0); // hard coded question for test
-                searchWeb(searchPhrase);
-            }
-        });
+    public void onHintClick(View v){
+
+        Resources res = getResources();
+        String searchPhrase = res.getResourceEntryName(questionString[randCorrect]) + " road sign";
+        searchWeb(searchPhrase);
     }
 
     public void onAboutClick(View v){
         Intent clickedAbout = new Intent(this, AboutActivity.class);
+        clickedAbout.putExtra("lastscore0", lastScores[0]);
+        clickedAbout.putExtra("lastscore1", lastScores[1]);
         startActivity(clickedAbout);
     }
 
@@ -132,15 +134,12 @@ public class MainActivity extends AppCompatActivity {
         Random rand = new Random();
         randCorrect = rand.nextInt(4);
 
-        //question.setText(getResources().getString(questionString[q]));
-
-        int q = rand.nextInt(3);
-
-        logIt("q:"+ randCorrect );
+        logIt("randCorrect:"+ randCorrect );
 
         for(int i = 0; i<grid.length; i++){
             if(i == randCorrect){
-                grid[i] = questionIMG[currQuestion];
+                //grid[i] = questionIMG[currQuestion-1];
+                grid[i] = questionIMG[randCorrect];
             } else {
                     for (int j=0; j<usedImgs.length;j++){
                         int r = rand.nextInt(3);
@@ -153,9 +152,15 @@ public class MainActivity extends AppCompatActivity {
                     }
             }
         }
+        insertQuestion(randCorrect);
         return randCorrect;
     }
 
+    private void insertQuestion(int correct){
+        TextView question = (TextView) findViewById(R.id.question);
+        question.setText(questionString[correct]);
+
+    }
 
     /**
      * ISSUE: In the else clause, when setting a onClick on the button,
@@ -164,6 +169,9 @@ public class MainActivity extends AppCompatActivity {
      */
 
     private void drawGrid(int correct){
+
+        String outOf = "Question " + currQuestion + " out of 4";
+        qOutOf.setText(outOf);// was here
 
         for (int i=0; i<buttons.length;i++){
             if (i == correct){
@@ -200,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
         nextBut.setVisibility(View.VISIBLE);
         if (currQuestion < 4) { // end quiz if more.
 
-            quizFinished = false;
             tries = 0;
             currQuestion++;
             correctAns++;
@@ -209,23 +216,29 @@ public class MainActivity extends AppCompatActivity {
             for (int i=0;i<buttons.length;i++){
                 buttons[i].setClickable(false);
             }
-            nextBut.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    nextBut.setVisibility(View.INVISIBLE);
-                    //Reshuffle the grid to question 2
-                    //Add other random images.
-                    int correct = setGrid();
-                    drawGrid(correct);
-                }
-            });
+                nextBut.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        nextBut.setVisibility(View.INVISIBLE);
+                        //Reshuffle the grid to question 2
+                        //Add other random images.
+                        int correct = setGrid();
+                        drawGrid(correct);
+                        updateUI(tries,incorrectAns,correctAns,currQuestion);
+                    }
+                });
         } else {
-
+            resetAllCounters();
             quizFinished = true;
-            Intent quizEnd = new Intent(this, QuizFinished.class);
-            startActivity(quizEnd);
 
-            //window pop up CONGRATZ U WIN, winner winner chicken dinner.
+            lastScores[0] = lastScores[1];
+            lastScores[1] = intpScore;
+
+
+            Intent quizEnd = new Intent(this, QuizFinished.class);
+            quizEnd.putExtra("score", intpScore);
+            startActivity(quizEnd);
+            super.finish();
         }
 
     }
@@ -239,18 +252,6 @@ public class MainActivity extends AppCompatActivity {
              buttons[i].setClickable(false);
          }
          nextBut.setVisibility(View.VISIBLE);
-//         switch (randCorrect){
-//             case 0: button1.setAnimation(mAnimation);
-//                 break;
-//             case 1: button2.setAnimation(mAnimation);
-//                 break;
-//             case 2: button3.setAnimation(mAnimation);
-//                 break;
-//             case 3: button4.setAnimation(mAnimation);
-//                 break;
-//         }
-        // buttons[randCorrect].startAnimation(mAnimation);
-         //buttons[randCorrect].setBackground(getDrawable(R.drawable.imagebutton_green_border));
          nextBut.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
@@ -267,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
          logIt("rand" + randCorrect);
          logIt(buttons[randCorrect] + "");
          logIt(buttons[randCorrect].toString());
+         currQuestion++;
          tries++;
          //loser cant even get the quiz question right.
      }
@@ -274,18 +276,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateUI(int tries, int incorrectAns, int correctAns, int currQuestion) {
         //question 0 out of 4
-        String outOf = "Question " + currQuestion + " out of 4";
-        qOutOf.setText(outOf);
         //correct/tries correct
-        String corTries = correctAns + "/4 correct";
+        String corTries = correctAns + "/4 correct ; " + incorrectAns + "/4 incorrect";
         qCorrect.setText(corTries);
         //Score percentage
         if (incorrectAns == 0) {
             logIt("Can't divide by 0, fatal exception");
             qPercentage.setText("Your score is 100%");
+            intpScore = 100;
         } else {
             double percentageScore =  ((double) correctAns / 4) * 100;
-            int intpScore = (int) percentageScore;
+            intpScore = (int) percentageScore;
             if (intpScore > 100){
                 String pScore100 = "Your score is 100%";
             } else {
@@ -326,12 +327,16 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt("percentage", percentage);
         editor.putInt("randCorrect", randCorrect);
         editor.putBoolean("quizFinished", quizFinished);
+        editor.putInt("lastscores0", lastScores[0]);
+        editor.putInt("lastscores1", lastScores[1]);
         editor.commit();
     }
     private void restoreSharedPreferences(){
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 
         boolean finished = preferences.getBoolean("quizFinished", quizFinished);
+        lastScores[0] = preferences.getInt("lastscores0",lastScores[0]);
+        lastScores[1] = preferences.getInt("lastscores1",lastScores[1]);
 
         if(finished){
             resetAllCounters();
@@ -346,14 +351,13 @@ public class MainActivity extends AppCompatActivity {
             percentage = preferences.getInt("percentage", percentage);
             randCorrect = preferences.getInt("randCorrect", randCorrect);
         }
-
     }
 
     private void resetAllCounters(){
         tries = 0;
         incorrectAns = 0;
         correctAns = 0;
-        currQuestion = 0;
+        currQuestion = 1;
         percentage = 0;
     }
 

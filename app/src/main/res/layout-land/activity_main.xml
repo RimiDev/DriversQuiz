@@ -28,18 +28,18 @@
     </LinearLayout>
 
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:paddingTop="0dp">
 
         <ImageButton
             android:id="@+id/img_1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:paddingTop="0dp"
             android:background="@drawable/dq_icon" />
 
         <ImageButton
@@ -47,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:paddingTop="0dp"
             android:background="@drawable/dq_icon" />
 
 
@@ -147,13 +148,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
-
-        <Button
-            android:id="@+id/nextBut"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/nextBt"
-            android:visibility="invisible"/>
 
     </LinearLayout>
 

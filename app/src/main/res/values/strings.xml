@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">Drive it Quiz</string>
-    <string name="question_0">What are the 0 hexagons on the road for?</string>
-    <string name="question_1">What are the 1 hexagons on the road for?</string>
-    <string name="question_2">What are the 2 hexagons on the road for?</string>
-    <string name="question_3">What are the 3 hexagons on the road for?</string>
+    <string name="stop" description = "test" >What sign must you perform a complete stop for?</string>
+    <string name="maximum">What sign dictates a maximum travel speed?</string>
+    <string name="parking">What sign indicates no parking?</string>
+    <string name="uturn">What sign indicates you may perform a U-turn?</string>
     <string name="aboutBt">About</string>
     <string name="hintBt">Hint</string>
     <string name="nextBt">Next</string>
     <string name="scorePercentage">Your score is 0%</string>
     <string name="questionOutOf">Question 1 out of 4</string>
-    <string name="correctWrong">0/4 correct</string>
+    <string name="correctWrong">0/4 correct ; 0/4 incorrect"</string>
     <string name="aboutTitle">About</string>
     <string name="instructionTitle">Instructions</string>
     <string name="instructions">Welcome to Nick and Max\'s driver quiz! The object of the quiz is
@@ -19,7 +19,7 @@
         the end you will be presented with your score.</string>
     <string name="developers">Developped by Maxime Lacasse and Nicolas Mazzone. Third year computer
         science students at Dawson College</string>
-    <string name="lastScores">Last quiz scores: 100%, 100%</string>
+    <string name="lastScores">Last quiz scores: 0%, 0%</string>
     <string name="finishedMessage">Congratulations! You\'ve finished the quiz.</string>
     <string name="finalScore">You\'re final score is 0%</string>
     <string name="playAgain">Play Again</string>
