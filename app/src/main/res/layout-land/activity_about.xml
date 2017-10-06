@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    tools:context="cs.dawson.myapplication.AboutActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/aboutTitle"
+        android:textSize="@dimen/title_size" />
+
+    <TextView
+        android:id="@+id/developers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingTop="16dp"
+        android:text="@string/developers" />
+
+    <TextView
+        android:id="@+id/instruction_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/instructionTitle"
+        android:textSize="@dimen/sub_title"/>
+
+    <TextView
+        android:id="@+id/instructions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingTop="10dp"
+        android:text="@string/instructions"
+        android:textAlignment="textStart" />
+
+    <TextView
+        android:id="@+id/savedScores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/lastScores" />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="67dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/dq_icon" />
+</LinearLayout>
