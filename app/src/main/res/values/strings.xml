@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Drive it Quiz</string>
-    <string name="stop" description = "test" >What sign must you perform a complete stop for?</string>
+    <string name="stop">What sign must you perform a complete stop for?</string>
     <string name="maximum">What sign dictates a maximum travel speed?</string>
     <string name="parking">What sign indicates no parking?</string>
     <string name="uturn">What sign indicates you may perform a U-turn?</string>
@@ -9,7 +9,7 @@
     <string name="nextBt">Next</string>
     <string name="scorePercentage">Your score is 0%</string>
     <string name="questionOutOf">Question 1 out of 4</string>
-    <string name="correctWrong">0/4 correct ; 0/4 incorrect"</string>
+    <string name="correctWrong">0 correct ; 0 incorrect"</string>
     <string name="aboutTitle">About</string>
     <string name="instructionTitle">Instructions</string>
     <string name="instructions">Welcome to Nick and Max\'s driver quiz! The object of the quiz is

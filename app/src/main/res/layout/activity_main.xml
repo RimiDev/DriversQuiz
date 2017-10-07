@@ -152,8 +152,9 @@
             android:id="@+id/nextBut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onNextClick"
             android:text="@string/nextBt"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
     </LinearLayout>
 
