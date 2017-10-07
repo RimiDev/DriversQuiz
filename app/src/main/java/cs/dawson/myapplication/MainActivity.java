@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    int quizAttempts, tries, correctAns, incorrectAns, currQuestion, percentage, rightPos;
+    int tries, correctAns, incorrectAns, currQuestion, percentage, rightPos, rightImage;
 
     int[] usedQuestions = new int[4];
 
@@ -35,10 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     int[] questionIMG;
+    int[] questionCorrect;
     int[] questionString;
     int[] invalidIMG;
     int[] lastScores;
     int[] rightWrong;
+
 
     ImageButton[] buttons;
 
@@ -47,12 +49,23 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, msg);
     }
 
+    private void logAllCounters(){
+     logIt("tries: " + tries+ " correctAns: " + correctAns +" incorrectAns: " + incorrectAns
+             +" currQuestion: " + currQuestion +" percentage: " + percentage +" rightPos: " + rightPos + " rightImage: " + rightImage);
+    }
+
     private void loadAll() {
         questionIMG = new int[4];
         questionIMG[0] = R.drawable.stop;
         questionIMG[1] = R.drawable.maxspeed;
         questionIMG[2] = R.drawable.noparking;
         questionIMG[3] = R.drawable.uturn;
+
+        questionCorrect = new int[4];
+        questionCorrect[0] = R.drawable.stopcorrect;
+        questionCorrect[0] = R.drawable.maxspeedcorrect;
+        questionCorrect[0] = R.drawable.noparkingcorrect;
+        questionCorrect[0] = R.drawable.uturncorrect;
 
 
         questionString = new int[4];
@@ -109,11 +122,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeCounters() {
         usedImagePosition = 0;
-        quizAttempts = 0;
         tries = 0;
         correctAns = 0;
         incorrectAns = 0;
-        //currQuestion = 0; // make sure to always display + 1
+        currQuestion = 0; // make sure to always display + 1
         percentage = 0;
     }
 
@@ -124,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
 
         loadAll();
         initializeCounters();
+        restoreSharedPreferences();
+
+        logIt("onCreate() currQuestion = " + currQuestion);
+
+
         orderWrongImages = orderAvailableWrongImages();
         rightPos = selectAvailableQuestion();
         setupGrid(rightPos);
@@ -139,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
 
         while(isUsedQuestion(randomVal)){
             randomVal = rand.nextInt(4); // cause infinit loop..
-            logIt("LOOOOOOOPPPPPPPP");
         }
 
 
@@ -225,13 +241,16 @@ public class MainActivity extends AppCompatActivity {
 
             if(grid[i]>=0 && grid[i]<50){
                 //this is correct question
-                int pos = grid[i];
+                int pos = grid[i]; // position of right answer on grid
+                rightImage = i;
                 buttons[i].setBackgroundResource(questionIMG[pos]);
                 buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         view.setBackgroundResource(rightWrong[1]);
                         view.setClickable(false);
+                        currQuestion++;
+                        logIt("currQuestion = " + currQuestion);
                         selectedCorrectImage();
                     }
                 });
@@ -262,23 +281,31 @@ public class MainActivity extends AppCompatActivity {
     private void selectedWrongImage() {
         tries++;
         if (tries == 2) {
-            if(currQuestion < 4) {
+
+            buttons[rightImage].setImageResource(questionCorrect[rightPos]);
+
+            if(currQuestion < 3) {
                 nextBut.setVisibility(View.VISIBLE);
                 for (int i = 0; i < buttons.length; i++) {
                     buttons[i].setClickable(false);
                 }
+                currQuestion++;
+                logIt("currQuestion = " + currQuestion);
                 tries = 0;
                 incorrectAns++;
                 updateText(correctAns, incorrectAns);
             }
-            else{
-
-                //handle en of game
-                resetAllCounters();
+            else if(currQuestion == 3){
+                currQuestion++;
+                logIt("currQuestion = " + currQuestion);
+                //handle end of game
+                incorrectAns++;
+                updatePercentage();
                 lastScores[0] = lastScores[1];
                 lastScores[1] = percentage;
                 Intent quizEnd = new Intent(this, QuizFinished.class);
                 quizEnd.putExtra("score", percentage);
+                initializeCounters();
                 startActivity(quizEnd);
                 super.finish();
             }
@@ -300,11 +327,13 @@ public class MainActivity extends AppCompatActivity {
             updateText(correctAns,incorrectAns);
         }else{
             //game ended handle here
-            resetAllCounters();
+            correctAns++;
+            updatePercentage();
             lastScores[0] = lastScores[1];
             lastScores[1] = percentage;
             Intent quizEnd = new Intent(this, QuizFinished.class);
             quizEnd.putExtra("score", percentage);
+            initializeCounters();
             startActivity(quizEnd);
             super.finish();
         }
@@ -313,15 +342,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void updateText(int correctAns, int incorrectAns){
-        qCorrect.setText(correctAns + " correct ; " + incorrectAns + " incorrect");
+    private void updatePercentage(){
         int percent = correctAns*25;
         percentage = percent;
         qPercentage.setText("Your current grade is " + percent + "%");
     }
 
+    private void updateText(int correctAns, int incorrectAns){
+        qCorrect.setText(correctAns + " correct ; " + incorrectAns + " incorrect");
+        updatePercentage();
+        logAllCounters();
+    }
+
     public void onNextClick(View v){
-        currQuestion++;
         nextBut.setVisibility(View.INVISIBLE);
         rightPos = selectAvailableQuestion();
         setupGrid(rightPos);
@@ -359,51 +392,84 @@ public class MainActivity extends AppCompatActivity {
     private void getSharedPreferences() {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-//        editor.putInt("quizAttempts", quizAttempts);
-//        editor.putInt("tries", tries);
-//        editor.putInt("correctAns", correctAns);
-//        editor.putInt("incorrectAns", incorrectAns);
-//        editor.putInt("currQuestion", currQuestion);
-//        editor.putInt("percentage", percentage);
-//        editor.putInt("randCorrect", randCorrect);
-//        editor.putBoolean("quizFinished", quizFinished);
-//        editor.putInt("lastscores0", lastScores[0]);
-//        editor.putInt("lastscores1", lastScores[1]);
+        editor.putInt("tries", tries);
+        editor.putInt("correctAns", correctAns);
+        editor.putInt("incorrectAns", incorrectAns);
+        editor.putInt("currQuestion", currQuestion);
+        editor.putInt("percentage", percentage);
+        editor.putInt("lastscores0", lastScores[0]);
+        editor.putInt("lastscores1", lastScores[1]);
         editor.commit();
     }
 
     private void restoreSharedPreferences() {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 
-//        boolean finished = preferences.getBoolean("quizFinished", quizFinished);
-//        lastScores[0] = preferences.getInt("lastscores0", lastScores[0]);
-//        lastScores[1] = preferences.getInt("lastscores1", lastScores[1]);
-//
-//        if (finished) {
-//            resetAllCounters();
-//        } else {
-//
-//            quizAttempts = preferences.getInt("quizAttempts", quizAttempts);
-//            tries = preferences.getInt("tries", tries);
-//            correctAns = preferences.getInt("correctAns", correctAns);
-//            incorrectAns = preferences.getInt("incorrectAns", incorrectAns);
-//            currQuestion = preferences.getInt("currQuestion", currQuestion);
-//            percentage = preferences.getInt("percentage", percentage);
-//            randCorrect = preferences.getInt("randCorrect", randCorrect);
-//        }
-    }
+        lastScores[0] = preferences.getInt("lastscores0", lastScores[0]);
+        lastScores[1] = preferences.getInt("lastscores1", lastScores[1]);
+        currQuestion = preferences.getInt("currQuestion", currQuestion);
+        logIt("restoreSharedPreferences() currQuestion = " + currQuestion);
 
-    private void resetAllCounters() {
 
+        if (currQuestion>3) {
+            initializeCounters();
+        } else {
+            tries = preferences.getInt("tries", tries);
+            correctAns = preferences.getInt("correctAns", correctAns);
+            incorrectAns = preferences.getInt("incorrectAns", incorrectAns);
+            percentage = preferences.getInt("percentage", percentage);
+            updateText(correctAns,incorrectAns);
+        }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
 
+        super.onRestoreInstanceState(savedInstanceState);
+
+        question.setText(savedInstanceState.getString("question"));
+        qOutOf.setText(savedInstanceState.getString("qOutOf"));
+        qCorrect.setText(savedInstanceState.getString("qCorrect"));
+
+        usedQuestions = savedInstanceState.getIntArray("usedQuestions");
+        orderWrongImages = savedInstanceState.getIntArray("orderWrongImages");
+
+        questionIMG = savedInstanceState.getIntArray("questionIMG");
+        questionString = savedInstanceState.getIntArray("questionString");
+        invalidIMG = savedInstanceState.getIntArray("invalidIMG");
+        lastScores = savedInstanceState.getIntArray("lastScores");
+        rightWrong = savedInstanceState.getIntArray("rightWrong");
+
+        usedImagePosition = savedInstanceState.getInt("usedImagePosition");
+
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+
+
+        outState.putString("question", question.getText().toString());
+        outState.putString("qOutOf", qOutOf.getText().toString());
+        outState.putString("qCorrect", qCorrect.getText().toString());
+
+        outState.putIntArray("usedQuestions", usedQuestions);
+        outState.putIntArray("orderWrongImages", orderWrongImages);
+
+        outState.putIntArray("questionIMG", questionIMG);
+        outState.putIntArray("questionString", questionString);
+        outState.putIntArray("invalidIMG", invalidIMG);
+        outState.putIntArray("lastScores", lastScores);
+        outState.putIntArray("rightWrong", rightWrong);
+
+        outState.putInt("usedImagePosition", usedImagePosition);
+
+
+
+
+/*
+        Button nextBut;
+        ImageButton[] buttons;*/
+
         super.onSaveInstanceState(outState);
     }
 }

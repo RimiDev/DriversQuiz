@@ -178,24 +178,6 @@ public class NoWorkMainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-//
-//        for(int i = 0; i <grid.length;i++){
-//
-//            if ( i == question){
-//                grid[i] = questionIMG[randyCorrect];
-//                setgridquestions++;
-//                continue;
-//            } else {
-//                grid[i] = invalidIMG[used[i]];
-//            }
-//        }
-//        randCorrect = randyCorrect;
-//        insertQuestion(randyCorrect);
-//        return randyCorrect;
-
     private void insertQuestion(int correct){
         TextView question = (TextView) findViewById(R.id.question);
         question.setText(questionString[correct]);
