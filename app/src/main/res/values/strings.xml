@@ -9,7 +9,7 @@
     <string name="nextBt">Next</string>
     <string name="scorePercentage">Your score is 0%</string>
     <string name="questionOutOf">Question 1 out of 4</string>
-    <string name="correctWrong">0 correct ; 0 incorrect"</string>
+    <string name="correctWrong">0 correct ; 0 incorrect</string>
     <string name="aboutTitle">About</string>
     <string name="instructionTitle">Instructions</string>
     <string name="instructions">Welcome to Nick and Max\'s driver quiz! The object of the quiz is
