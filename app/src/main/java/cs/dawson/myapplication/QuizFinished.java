@@ -16,7 +16,7 @@ public class QuizFinished extends AppCompatActivity {
         setContentView(R.layout.activity_quiz_finished);
 
         TextView finalScore = (TextView) findViewById(R.id.final_score);
-        finalScore.setText("You\\'re final score is "+ getIntent().getIntExtra("score", 0)+ "%");
+        finalScore.setText("You\'re final score is "+ getIntent().getIntExtra("score", 0)+ "%");
     }
 
     public void onPlayAgainClick(View v){

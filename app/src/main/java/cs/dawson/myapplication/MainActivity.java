@@ -20,12 +20,11 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    int tries, correctAns, incorrectAns, currQuestion, percentage, rightPos, rightImage;
+    int tries, correctAns, incorrectAns, currQuestion, percentage, rightPos, rightImage, usedImagePosition;
 
     int[] usedQuestions = new int[4];
 
     int[] orderWrongImages = new int[12];
-    int usedImagePosition;
 
     TextView question;
     TextView qOutOf;
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     Button nextBut;
 
-
     int[] questionIMG;
     int[] questionCorrect;
     int[] questionString;
@@ -42,19 +40,29 @@ public class MainActivity extends AppCompatActivity {
     int[] lastScores;
     int[] rightWrong;
 
-
     ImageButton[] buttons;
 
+    /**
+     * Method to easily log to logcat
+     *
+     * @param msg to be printed to logcat
+     */
     public static void logIt(String msg) {
         final String TAG = "-------------------DQ: ";
         Log.d(TAG, msg);
     }
 
-    private void logAllCounters(){
-     logIt("tries: " + tries+ " correctAns: " + correctAns +" incorrectAns: " + incorrectAns
-             +" currQuestion: " + currQuestion +" percentage: " + percentage +" rightPos: " + rightPos + " rightImage: " + rightImage);
+    /**
+     * prints all counter to logcat.
+     */
+    private void logAllCounters() {
+        logIt("tries: " + tries + " correctAns: " + correctAns + " incorrectAns: " + incorrectAns
+                + " currQuestion: " + currQuestion + " percentage: " + percentage + " rightPos: " + rightPos + " rightImage: " + rightImage);
     }
 
+    /**
+     * Loads all the arrays with appropriate ids and values.
+     */
     private void loadAll() {
         questionIMG = new int[4];
         questionIMG[0] = R.drawable.stop;
@@ -67,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         questionCorrect[0] = R.drawable.maxspeedcorrect;
         questionCorrect[0] = R.drawable.noparkingcorrect;
         questionCorrect[0] = R.drawable.uturncorrect;
-
 
         questionString = new int[4];
         questionString[0] = R.string.stop;
@@ -102,13 +109,11 @@ public class MainActivity extends AppCompatActivity {
         usedQuestions[2] = -1;
         usedQuestions[3] = -1;
 
-
         buttons = new ImageButton[4];
         buttons[0] = (ImageButton) findViewById(R.id.img_1);
         buttons[1] = (ImageButton) findViewById(R.id.img_2);
         buttons[2] = (ImageButton) findViewById(R.id.img_3);
         buttons[3] = (ImageButton) findViewById(R.id.img_4);
-
 
         question = (TextView) findViewById(R.id.question);
         qOutOf = (TextView) findViewById(R.id.qOutOf);
@@ -121,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * initializes all the counters to 0;
+     */
     private void initializeCounters() {
         usedImagePosition = 0;
         tries = 0;
@@ -141,39 +149,45 @@ public class MainActivity extends AppCompatActivity {
 
         logIt("onCreate() currQuestion = " + currQuestion);
 
-
         orderWrongImages = orderAvailableWrongImages();
         rightPos = selectAvailableQuestion();
         setupGrid(rightPos);
-
     }
 
 
-
-    private int selectAvailableQuestion(){
+    /**
+     * Randomly selects an available question number
+     *
+     * @return
+     */
+    private int selectAvailableQuestion() {
 
         Random rand = new Random();
         int randomVal = rand.nextInt(4);// we want between 0 and 3 since there are only 4 questions
 
-        while(isUsedQuestion(randomVal)){
+        while (isUsedQuestion(randomVal)) {
             randomVal = rand.nextInt(4); // cause infinit loop..
         }
-
-
         usedQuestions[currQuestion] = randomVal;
         logIt("New correct value generated: " + randomVal);
         return randomVal;
     }
 
-    private boolean isUsedQuestion(int value){
+    /**
+     * verifies if question has already been used so they are not asked again
+     *
+     * @param value question number
+     * @return true if question has been used ; false if question has not been used
+     */
+    private boolean isUsedQuestion(int value) {
 
         logIt("UsedQuestions length: " + usedQuestions.length);
 
-        for (int i = 0; i<usedQuestions.length; i++) {
+        for (int i = 0; i < usedQuestions.length; i++) {
 
             logIt("isUsedQuestionLoop i = " + i);
 
-            if(usedQuestions[i] == value){
+            if (usedQuestions[i] == value) {
                 return true;
             }
         }
@@ -182,52 +196,52 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * generates an array for the order of images to be display as wrong
-     * @return
+     *
+     * @return int array of randomized image order
      */
-    private int[] orderAvailableWrongImages(){
+    private int[] orderAvailableWrongImages() {
 
         int[] currWrongImages = new int[12];
 
         List<Integer> wrongList = new ArrayList<Integer>();
-        for(int i = 0; i< 12; i++){
+        for (int i = 0; i < 12; i++) {
             wrongList.add(i);
         }
         Collections.shuffle(wrongList);
 
-        for(int j = 0; j<currWrongImages.length; j++){
+        for (int j = 0; j < currWrongImages.length; j++) {
             currWrongImages[j] = wrongList.get(j);
-            logIt("currWrongImages[j] = "+ currWrongImages[j]);
+            logIt("currWrongImages[j] = " + currWrongImages[j]);
         }
         return currWrongImages;
     }
 
 
     /**
-     * draws one question
-     * @param questionNumber
+     * creates a grid like array that positions right image for question and wrong/invalid images
+     *
+     * @param questionNumber position of quesiton in array
      */
-    private void setupGrid(int questionNumber){
+    private void setupGrid(int questionNumber) {
 
         int[] grid = new int[4];
 
         Random rand = new Random();
         int putQuestionHere = rand.nextInt(4);
 
+        for (int i = 0; i < grid.length; i++) {
 
-        for(int i = 0; i<grid.length; i++){
-
-            if(i == putQuestionHere){
+            if (i == putQuestionHere) {
                 grid[i] = questionNumber;
-                logIt("1grid[i] = "+ grid[i]);
-            }
-            else{
-                if(usedImagePosition == 0){
-                    grid[i] = -1*(usedImagePosition+111);
-                    logIt("2grid[i] = "+ grid[i]);
+                logIt("1grid[i] = " + grid[i]);
+            } else {
+                if (usedImagePosition == 0) {
+                    grid[i] = -1 * (usedImagePosition + 111);
+                    logIt("2grid[i] = " + grid[i]);
                     usedImagePosition++;
-                }else {
+                } else {
                     grid[i] = -1 * usedImagePosition;
-                    logIt("3grid[i] = "+ grid[i]);
+                    logIt("3grid[i] = " + grid[i]);
                     usedImagePosition++;
                 }
             }
@@ -235,12 +249,15 @@ public class MainActivity extends AppCompatActivity {
         drawGrid(grid);
     }
 
-    private void drawGrid(int[] grid){
-
-        for (int i = 0; i<grid.length; i++){
-            logIt("Grid["+i+"] contains " + grid[i] );
-
-            if(grid[i]>=0 && grid[i]<50){
+    /**
+     * draws the grid to the image buttons with question image and invalid images
+     *
+     * @param grid int array with positions of right and wrong images
+     */
+    private void drawGrid(int[] grid) {
+        for (int i = 0; i < grid.length; i++) {
+            logIt("Grid[" + i + "] contains " + grid[i]);
+            if (grid[i] >= 0 && grid[i] < 50) {
                 //this is correct question
                 int pos = grid[i]; // position of right answer on grid
                 rightImage = i;
@@ -256,15 +273,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 question.setText(questionString[pos]);
-            }else {
+            } else {
                 //wrong images here
-                int pos = -1*grid[i];// multiply by -1 to convert back to positive integer
-                if(pos > 100 ){
-                    pos = pos-111;
+                int pos = -1 * grid[i];// multiply by -1 to convert back to positive integer
+                if (pos > 100) {
+                    pos = pos - 111;
                 }
                 logIt("POS = " + pos);
                 buttons[i].setBackgroundResource(invalidIMG[orderWrongImages[pos]]);
-                buttons[i].setOnClickListener(new View.OnClickListener(){
+                buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         view.setBackgroundResource(rightWrong[0]);
@@ -273,23 +290,23 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-
         }
-        qOutOf.setText((currQuestion+1) + " out of 4");
-
+        qOutOf.setText((currQuestion + 1) + " out of 4");
     }
 
+    /**
+     * method that handles what happens when an incorrect image is selected
+     */
     private void selectedWrongImage() {
         tries++;
-        
+
         if (tries == 2) {
-            for(int i = 0; i<buttons.length; i++){
-                if(i!=rightImage){
+            for (int i = 0; i < buttons.length; i++) {
+                if (i != rightImage) {
                     buttons[i].setBackgroundResource(rightWrong[0]);
                 }
             }
-
-            if(currQuestion < 3) {
+            if (currQuestion < 3) {
                 nextBut.setVisibility(View.VISIBLE);
                 for (int i = 0; i < buttons.length; i++) {
                     buttons[i].setClickable(false);
@@ -299,8 +316,7 @@ public class MainActivity extends AppCompatActivity {
                 tries = 0;
                 incorrectAns++;
                 updateText(correctAns, incorrectAns);
-            }
-            else if(currQuestion == 3){
+            } else if (currQuestion == 3) {
                 currQuestion++;
                 logIt("currQuestion = " + currQuestion);
                 //handle end of game
@@ -317,10 +333,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method that handles what happens when a correct image is selected
+     */
     private void selectedCorrectImage() {
-
-        //update counters
-        //modify text
 
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].setClickable(false);
@@ -329,8 +345,8 @@ public class MainActivity extends AppCompatActivity {
             tries = 0;
             correctAns++;
             nextBut.setVisibility(View.VISIBLE);
-            updateText(correctAns,incorrectAns);
-        }else{
+            updateText(correctAns, incorrectAns);
+        } else {
             //game ended handle here
             correctAns++;
             updatePercentage();
@@ -342,36 +358,56 @@ public class MainActivity extends AppCompatActivity {
             startActivity(quizEnd);
             super.finish();
         }
-
-
-
     }
 
-    private void updatePercentage(){
-        int percent = correctAns*25;
+    /**
+     * updates the percentage value
+     */
+    private void updatePercentage() {
+        int percent = correctAns * 25;
         percentage = percent;
         qPercentage.setText("Your current grade is " + percent + "%");
     }
 
-    private void updateText(int correctAns, int incorrectAns){
+    /**
+     * Updates the text in the layout
+     *
+     * @param correctAns   counter for correct answers
+     * @param incorrectAns counter for incorrect answers
+     */
+    private void updateText(int correctAns, int incorrectAns) {
         qCorrect.setText(correctAns + " correct ; " + incorrectAns + " incorrect");
         updatePercentage();
         logAllCounters();
     }
 
-    public void onNextClick(View v){
+    /**
+     * onClick handler for next button
+     *
+     * @param v
+     */
+    public void onNextClick(View v) {
         nextBut.setVisibility(View.INVISIBLE);
         rightPos = selectAvailableQuestion();
         setupGrid(rightPos);
-
     }
 
+    /**
+     * onClick handler for hint button. Starts new intent.
+     *
+     * @param v
+     */
     public void onHintClick(View v) {
         Resources res = getResources();
         String searchPhrase = res.getResourceEntryName(questionString[rightPos]) + " road sign"; //fix this need to get right phrase from the current correct image
         searchWeb(searchPhrase);
     }
 
+    /**
+     * onClick handler for About button. Starts About Activity
+     *
+     * @param v
+     */
     public void onAboutClick(View v) {
         Intent clickedAbout = new Intent(this, AboutActivity.class);
         clickedAbout.putExtra("lastscore0", lastScores[0]);
@@ -385,6 +421,11 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences();
     }
 
+    /**
+     * method that starts intent and passes string to search on google for
+     *
+     * @param query string to do Google search for
+     */
     public void searchWeb(String query) {
         Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
         intent.putExtra(SearchManager.QUERY, query);
@@ -393,7 +434,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * gets all sharedPreferences
+     */
     private void getSharedPreferences() {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -407,6 +450,9 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    /**
+     * restores all shared preferences.
+     */
     private void restoreSharedPreferences() {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 
@@ -415,15 +461,14 @@ public class MainActivity extends AppCompatActivity {
         currQuestion = preferences.getInt("currQuestion", currQuestion);
         logIt("restoreSharedPreferences() currQuestion = " + currQuestion);
 
-
-        if (currQuestion>3) {
+        if (currQuestion > 3) {
             initializeCounters();
         } else {
             tries = preferences.getInt("tries", tries);
             correctAns = preferences.getInt("correctAns", correctAns);
             incorrectAns = preferences.getInt("incorrectAns", incorrectAns);
             percentage = preferences.getInt("percentage", percentage);
-            updateText(correctAns,incorrectAns);
+            updateText(correctAns, incorrectAns);
         }
     }
 
@@ -446,12 +491,10 @@ public class MainActivity extends AppCompatActivity {
         rightWrong = savedInstanceState.getIntArray("rightWrong");
 
         usedImagePosition = savedInstanceState.getInt("usedImagePosition");
-
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-
 
         outState.putString("question", question.getText().toString());
         outState.putString("qOutOf", qOutOf.getText().toString());
@@ -467,14 +510,6 @@ public class MainActivity extends AppCompatActivity {
         outState.putIntArray("rightWrong", rightWrong);
 
         outState.putInt("usedImagePosition", usedImagePosition);
-
-
-
-
-/*
-        Button nextBut;
-        ImageButton[] buttons;*/
-
         super.onSaveInstanceState(outState);
     }
 }
