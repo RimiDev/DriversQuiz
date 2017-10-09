@@ -39,16 +39,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="0dp"
-            android:background="@drawable/dq_icon" />
+            android:background="@drawable/dq_icon"
+            android:paddingTop="0dp" />
 
         <ImageButton
             android:id="@+id/img_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="0dp"
-            android:background="@drawable/dq_icon" />
+            android:background="@drawable/dq_icon"
+            android:paddingTop="0dp" />
 
 
     </LinearLayout>
@@ -61,14 +61,14 @@
         <ImageButton
             android:id="@+id/img_3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/dq_icon" />
 
         <ImageButton
             android:id="@+id/img_4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/dq_icon" />
 
@@ -150,6 +150,14 @@
         android:layout_gravity="bottom">
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/nextBut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onNextClick"
+        android:text="@string/nextBt"
+        android:visibility="invisible" />
 
 </LinearLayout>
 

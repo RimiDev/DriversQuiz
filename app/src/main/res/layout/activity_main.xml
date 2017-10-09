@@ -38,14 +38,14 @@
         <ImageButton
             android:id="@+id/img_1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/dq_icon" />
 
         <ImageButton
             android:id="@+id/img_2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/dq_icon" />
 
@@ -152,8 +152,9 @@
             android:id="@+id/nextBut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onNextClick"
             android:text="@string/nextBt"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
     </LinearLayout>
 
