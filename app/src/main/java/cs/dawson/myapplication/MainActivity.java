@@ -3,6 +3,7 @@ package cs.dawson.myapplication;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -280,9 +281,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void selectedWrongImage() {
         tries++;
+        
         if (tries == 2) {
-
-            buttons[rightImage].setImageResource(questionCorrect[rightPos]);
+            for(int i = 0; i<buttons.length; i++){
+                if(i!=rightImage){
+                    buttons[i].setBackgroundResource(rightWrong[0]);
+                }
+            }
 
             if(currQuestion < 3) {
                 nextBut.setVisibility(View.VISIBLE);
