@@ -144,14 +144,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loadAll();
-        initializeCounters();
-        restoreSharedPreferences();
 
-        logIt("onCreate() currQuestion = " + currQuestion);
+        if(savedInstanceState == null) {
 
-        orderWrongImages = orderAvailableWrongImages();
-        rightPos = selectAvailableQuestion();
-        setupGrid(rightPos);
+            initializeCounters();
+            restoreSharedPreferences();
+
+            logIt("onCreate() currQuestion = " + currQuestion);
+
+            orderWrongImages = orderAvailableWrongImages();
+            rightPos = selectAvailableQuestion();
+            setupGrid(rightPos);
+        }
+
     }
 
 
@@ -477,6 +482,8 @@ public class MainActivity extends AppCompatActivity {
 
         super.onRestoreInstanceState(savedInstanceState);
 
+        currQuestion = savedInstanceState.getInt("currQuestion", currQuestion);
+
         question.setText(savedInstanceState.getString("question"));
         qOutOf.setText(savedInstanceState.getString("qOutOf"));
         qCorrect.setText(savedInstanceState.getString("qCorrect"));
@@ -491,10 +498,14 @@ public class MainActivity extends AppCompatActivity {
         rightWrong = savedInstanceState.getIntArray("rightWrong");
 
         usedImagePosition = savedInstanceState.getInt("usedImagePosition");
+
+
+        setupGrid(rightPos);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("currQuestion", currQuestion);
 
         outState.putString("question", question.getText().toString());
         outState.putString("qOutOf", qOutOf.getText().toString());
