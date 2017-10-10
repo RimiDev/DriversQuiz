@@ -21,6 +21,6 @@ public class AboutActivity extends AppCompatActivity {
         int score0 = getIntent().getIntExtra("lastscore0", 0);
         int score1 = getIntent().getIntExtra("lastscore1", 0);
 
-        savedScores.setText("Last quiz scores: " + score0 + "%, " + score1 + "%");
+        savedScores.setText(getResources().getString(R.string.lastScores)+ " "  + score0 + "%, " + score1 + "%");
     }
 }

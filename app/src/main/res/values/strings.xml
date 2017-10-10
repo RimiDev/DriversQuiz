@@ -7,8 +7,9 @@
     <string name="aboutBt">About</string>
     <string name="hintBt">Hint</string>
     <string name="nextBt">Next</string>
-    <string name="scorePercentage">Your score is 0%</string>
-    <string name="questionOutOf">Question 1 out of 4</string>
+    <string name="scorePercentage">Your current grade is</string>
+    <string name="outOf">out of 4</string>
+    <string name="question">Question</string>
     <string name="correctWrong">0 correct ; 0 incorrect</string>
     <string name="aboutTitle">About</string>
     <string name="instructionTitle">Instructions</string>
@@ -19,7 +20,7 @@
         the end you will be presented with your score.</string>
     <string name="developers">Developped by Maxime Lacasse and Nicolas Mazzone. Third year computer
         science students at Dawson College</string>
-    <string name="lastScores">Last quiz scores: 0%, 0%</string>
+    <string name="lastScores">Last quiz scores:</string>
     <string name="finishedMessage">Congratulations! You\'ve finished the quiz.</string>
     <string name="finalScore">You\'re final score is 0%</string>
     <string name="playAgain">Play Again</string>

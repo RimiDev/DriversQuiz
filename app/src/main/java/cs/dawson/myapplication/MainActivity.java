@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }
-        qOutOf.setText((currQuestion + 1) + " out of 4");
+        qOutOf.setText(getResources().getString(R.string.question) + " "  + (currQuestion + 1) + " " + getResources().getString(R.string.outOf));
     }
 
     /**
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
     private void updatePercentage() {
         int percent = correctAns * 25;
         percentage = percent;
-        qPercentage.setText("Your current grade is " + percent + "%");
+        qPercentage.setText(getResources().getString(R.string.scorePercentage) + " " + percent + "%");
     }
 
     /**
