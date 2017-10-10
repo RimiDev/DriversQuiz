@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     Button nextBut;
 
     int[] questionIMG;
-    int[] questionCorrect;
     int[] questionString;
     int[] invalidIMG;
     int[] lastScores;
@@ -73,12 +73,6 @@ public class MainActivity extends AppCompatActivity {
         questionIMG[1] = R.drawable.maxspeed;
         questionIMG[2] = R.drawable.noparking;
         questionIMG[3] = R.drawable.uturn;
-
-        questionCorrect = new int[4];
-        questionCorrect[0] = R.drawable.stopcorrect;
-        questionCorrect[0] = R.drawable.maxspeedcorrect;
-        questionCorrect[0] = R.drawable.noparkingcorrect;
-        questionCorrect[0] = R.drawable.uturncorrect;
 
         questionString = new int[4];
         questionString[0] = R.string.stop;
@@ -127,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
         qCorrect = (TextView) findViewById(R.id.qCorrect);
 
         nextBut = (Button) findViewById(R.id.nextBut);
-
     }
 
     /**
@@ -148,19 +141,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loadAll();
+        initializeCounters();
 
-        if(savedInstanceState == null) {
+        logIt("onCreate() currQuestion = " + currQuestion);
 
-            initializeCounters();
-            restoreSharedPreferences();
+        if(savedInstanceState != null){
+            question.setText(savedInstanceState.getString("question"));
+            qOutOf.setText(savedInstanceState.getString("qOutOf"));
+            qCorrect.setText(savedInstanceState.getString("qCorrect"));
 
-            logIt("onCreate() currQuestion = " + currQuestion);
+            usedQuestions = savedInstanceState.getIntArray("usedQuestions");
+            orderWrongImages = savedInstanceState.getIntArray("orderWrongImages");
 
+            questionIMG = savedInstanceState.getIntArray("questionIMG");
+            questionString = savedInstanceState.getIntArray("questionString");
+            invalidIMG = savedInstanceState.getIntArray("invalidIMG");
+            lastScores = savedInstanceState.getIntArray("lastScores");
+            rightWrong = savedInstanceState.getIntArray("rightWrong");
+
+            rightPos = savedInstanceState.getInt("rightPos", rightPos);
+
+            usedImagePosition = savedInstanceState.getInt("usedImagePosition");
+            usedImagePosition = usedImagePosition - 3; // res
+        }else{
             orderWrongImages = orderAvailableWrongImages();
             rightPos = selectAvailableQuestion();
-            setupGrid(rightPos);
         }
-
+        restoreSharedPreferences();
+        setupGrid(rightPos);
     }
 
 
@@ -175,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         int randomVal = rand.nextInt(4);// we want between 0 and 3 since there are only 4 questions
 
         while (isUsedQuestion(randomVal)) {
-            randomVal = rand.nextInt(4); // cause infinit loop..
+            randomVal = rand.nextInt(4); // cause infinite loop..
         }
         usedQuestions[currQuestion] = randomVal;
         logIt("New correct value generated: " + randomVal);
@@ -245,13 +253,17 @@ public class MainActivity extends AppCompatActivity {
                 logIt("1grid[i] = " + grid[i]);
             } else {
                 if (usedImagePosition == 0) {
+                    logIt("usedImagePosition: " + usedImagePosition);
                     grid[i] = -1 * (usedImagePosition + 111);
                     logIt("2grid[i] = " + grid[i]);
                     usedImagePosition++;
+                    logIt("usedImagePosition++: " + usedImagePosition);
                 } else {
+                    logIt("usedImagePosition: " + usedImagePosition);
                     grid[i] = -1 * usedImagePosition;
                     logIt("3grid[i] = " + grid[i]);
                     usedImagePosition++;
+                    logIt("usedImagePosition++#2: " + usedImagePosition);
                 }
             }
         }
@@ -300,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }
-        qOutOf.setText(getResources().getString(R.string.question) + " "  + (currQuestion + 1) + " " + getResources().getString(R.string.outOf));
+        qOutOf.setText(getResources().getString(R.string.question) + " " + (currQuestion + 1) + " " + getResources().getString(R.string.outOf));
     }
 
     /**
@@ -482,35 +494,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-
-        super.onRestoreInstanceState(savedInstanceState);
-
-        currQuestion = savedInstanceState.getInt("currQuestion", currQuestion);
-
-        question.setText(savedInstanceState.getString("question"));
-        qOutOf.setText(savedInstanceState.getString("qOutOf"));
-        qCorrect.setText(savedInstanceState.getString("qCorrect"));
-
-        usedQuestions = savedInstanceState.getIntArray("usedQuestions");
-        orderWrongImages = savedInstanceState.getIntArray("orderWrongImages");
-
-        questionIMG = savedInstanceState.getIntArray("questionIMG");
-        questionString = savedInstanceState.getIntArray("questionString");
-        invalidIMG = savedInstanceState.getIntArray("invalidIMG");
-        lastScores = savedInstanceState.getIntArray("lastScores");
-        rightWrong = savedInstanceState.getIntArray("rightWrong");
-
-        usedImagePosition = savedInstanceState.getInt("usedImagePosition");
-
-
-        setupGrid(rightPos);
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("currQuestion", currQuestion);
-
         outState.putString("question", question.getText().toString());
         outState.putString("qOutOf", qOutOf.getText().toString());
         outState.putString("qCorrect", qCorrect.getText().toString());
@@ -523,6 +507,8 @@ public class MainActivity extends AppCompatActivity {
         outState.putIntArray("invalidIMG", invalidIMG);
         outState.putIntArray("lastScores", lastScores);
         outState.putIntArray("rightWrong", rightWrong);
+
+        outState.putInt("rightPos", rightPos);
 
         outState.putInt("usedImagePosition", usedImagePosition);
         super.onSaveInstanceState(outState);
