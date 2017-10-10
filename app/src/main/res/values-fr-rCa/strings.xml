@@ -7,8 +7,9 @@
     <string name="aboutBt">A Propos</string>
     <string name="hintBt">Indice</string>
     <string name="nextBt">Suivant</string>
-    <string name="scorePercentage">Votre score est 0%</string>
-    <string name="questionOutOf">Question 1 de 4</string>
+    <string name="scorePercentage">Votre score est</string>
+    <string name="outOf"> de 4</string>
+    <string name="question">Question </string>
     <string name="correctWrong">0 correct ; 0 incorrect</string>
     <string name="aboutTitle">A Propos</string>
     <string name="instructionTitle">Instructions</string>
@@ -17,7 +18,7 @@
         reponse. Si la reponse est bonne, vous pourriez passer a la question suivante. Si votre
         premier choix est invalid, vous pourriez devinez de nouveau une derniere foix.</string>
     <string name="developers">Developpe par Maxime Lacasse et Nicolas Mazzone. Etudiants de troisieme annee a Dawson College</string>
-    <string name="lastScores">Scores des derniers quiz: 0%, 0%</string>
+    <string name="lastScores">Scores des derniers quiz:</string>
     <string name="finishedMessage">Felicitation, vous avez termine le quiz</string>
     <string name="finalScore">Votre score final est 0%</string>
     <string name="playAgain">Jouer de nouveau</string>
