@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Quiz de Conduite</string>
+    <string name="stop">Quel pancarte indique que l\'on doit faire un arret complet?</string>
+    <string name="maximum">Quel pancarte demontre une vitesse maximale?</string>
+    <string name="parking">Quel pancarte indique que l\'on ne peut pas se stationner?</string>
+    <string name="uturn">Quel pancarte indique que l\'on peut faire un U-turn?</string>
+    <string name="aboutBt">A Propos</string>
+    <string name="hintBt">Indice</string>
+    <string name="nextBt">Suivant</string>
+    <string name="scorePercentage">Votre score est</string>
+    <string name="outOf"> de 4</string>
+    <string name="question">Question </string>
+    <string name="correctWrong">0 correct ; 0 incorrect</string>
+    <string name="aboutTitle">A Propos</string>
+    <string name="instructionTitle">Instructions</string>
+    <string name="instructions">Bienvenue au quiz de conduite de Max et Nick!Le but du quiz est
+        simple, avoir le plus haut score. Lisez attentivement la question et selectionnez la bonne
+        reponse. Si la reponse est bonne, vous pourriez passer a la question suivante. Si votre
+        premier choix est invalid, vous pourriez devinez de nouveau une derniere foix.</string>
+    <string name="developers">Developpe par Maxime Lacasse et Nicolas Mazzone. Etudiants de troisieme annee a Dawson College</string>
+    <string name="lastScores">Scores des derniers quiz:</string>
+    <string name="finishedMessage">Felicitation, vous avez termine le quiz</string>
+    <string name="finalScore">Votre score final est 0%</string>
+    <string name="playAgain">Jouer de nouveau</string>
+    <string name="quit">Quitter</string>
+</resources>
